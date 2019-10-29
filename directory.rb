@@ -17,14 +17,14 @@ def input_students
   December: []
   }
   # get the first name
-  name = gets.chomp
+  name = gets.delete("\n")
   # while name is not empty, repeat this code
   while !name.empty? do
     cohort = input_cohort
     age = input_age
     add_to_cohort(name, age, cohort)
     #get another name from the user
-    name = gets.chomp
+    name = gets.delete("\n")
   end
   @cohorts
 end
@@ -32,7 +32,7 @@ end
 def input_cohort
   puts "Please enter the students cohort"
   # takes user input and makes first letter a capital for compairing to cohorts values
-  cohort = gets.chomp.capitalize
+  cohort = gets.delete("\n").capitalize
   # sets cohort to november if the user doesnt choose a cohort
   cohort = "November" if cohort.empty?
   cohort
@@ -42,7 +42,7 @@ def input_age
   puts "Please enter the students age"
   # adding more info works the same
   # gets user input for students age
-  age = gets.chomp
+  age = gets.delete("\n")
   # sets age to N/A if user doesn't set an age
   age = "N/A" if age.empty?
   age
@@ -77,7 +77,7 @@ def print(students)
   #   i += 1
   # end
   puts "Which cohort would you like to see?"
-  selected_cohort = gets.chomp.capitalize
+  selected_cohort = gets.delete("\n").capitalize
   students.each do |key, value|
     if selected_cohort.include?(key.to_s[0..2])
       puts "#{key} cohorts students:"
