@@ -76,13 +76,17 @@ def print(students)
   #   puts "#{i + 1}. #{students[i][:name]} age: #{students[i][:age]} (#{students[i][:cohort]} cohort)".center(40, "-")
   #   i += 1
   # end
-  puts "Which cohort would you like to see?"
-  selected_cohort = gets.delete("\n").capitalize
-  students.each do |key, value|
-    if selected_cohort.include?(key.to_s[0..2])
-      puts "#{key} cohorts students:"
-      value.each_with_index do |student, index|
-        puts "#{index + 1}. #{student[:name]} age: #{student[:age]}"
+  if students.map {|key, value| value.count}.reduce(0, :+) == 0
+    puts "There are currently no students in any cohort"
+  else
+    puts "Which cohort would you like to see?"
+    selected_cohort = gets.delete("\n").capitalize
+    students.each do |key, value|
+      if selected_cohort.include?(key.to_s[0..2])
+        puts "#{key} cohorts students:"
+        value.each_with_index do |student, index|
+          puts "#{index + 1}. #{student[:name]} age: #{student[:age]}"
+        end
       end
     end
   end
@@ -90,7 +94,13 @@ end
 
 def print_footer(students)
   head_count = students.map {|key, value| value.count}.reduce(0, :+)
-  head_count == 1 ? (puts "Overall, we have #{head_count} great student") : (puts "Overall, we have #{head_count} great students")
+  if head_count == 0
+    puts "Would you like to join one?"
+  elsif head_count == 1
+    (puts "Overall, we have #{head_count} great student")
+  else
+    (puts "Overall, we have #{head_count} great students")
+  end
 end
 
 students = input_students
