@@ -7,6 +7,7 @@ def input_students
   name = gets.chomp
   # while name is not empty, repeat this code
   while !name.empty? do
+    # dont know how to check for typo come back to it later
     puts "Please enter the students cohort"
     cohort = gets.chomp
     cohort.empty? ? (cohort = "november") : (cohort.to_sym)
