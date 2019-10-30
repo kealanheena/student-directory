@@ -1,5 +1,5 @@
 # create a hash with empty arrays for each cohort
-@cohorts = {
+@students = {
 January: [],
 February: [],
 March: [],
@@ -15,30 +15,9 @@ December: []
 }
 
 def interactive_menu
-  students = @cohorts
   loop do
-    # 1. print the menu and ask the user what to do
-    puts "1. Input the students"
-    puts "2. Show the students"
-    puts "9. Exit" # 9 because we'll be adding more items
-    # 2. read the input and save it into a variable
-    selection = gets.chomp
-    # 3. do what the user has asked
-    case selection
-      when "1"
-        # input the students
-        students = input_students
-      when "2"
-        # show the students
-        print_header
-        print(students)
-        print_footer(students)
-      when "9"
-        # this will cause the program to terminate
-        break
-      else
-        puts "I don't know what you meant, try again"
-    end
+    print_menu
+    process(gets.chomp)
   end
 end
 
@@ -55,7 +34,6 @@ def input_students
     #get another name from the user
     name = gets.delete("\n")
   end
-  @cohorts
 end
 
 def input_cohort
@@ -78,29 +56,28 @@ def input_age
 end
 
 def add_to_cohort(name, age, cohort)
-  @cohorts.each { |key, value|
+  @students.each { |key, value|
     if cohort.include?(key.to_s[0..2])
       # add the student hash to the array
       value << {name: name, age: age}
     end
   }
-  head_count = @cohorts.map {|key, value| value.count}.reduce(0, :+)
+  head_count = @students.map {|key, value| value.count}.reduce(0, :+)
   head_count == 1 ? (puts "We now have #{head_count} student") : (puts "We now have #{head_count} students")
-  @cohorts
 end
 
 def print_header
-    puts "The students of Villains Academy"
+  puts "The students of Villains Academy"
   puts "--------------------------------"
 end
 
-def print(students)
-  if students.map {|key, value| value.count}.reduce(0, :+) == 0
+def print_students_list
+  if @students.map {|key, value| value.count}.reduce(0, :+) == 0
     puts "There are currently no students in any cohort"
   else
     puts "Which cohort would you like to see?"
     selected_cohort = gets.delete("\n").capitalize
-    students.each do |key, value|
+    @students.each do |key, value|
       if selected_cohort.include?(key.to_s[0..2])
         puts "#{key} cohorts students:"
         value.each_with_index do |student, index|
@@ -111,14 +88,44 @@ def print(students)
   end
 end
 
-def print_footer(students)
-  head_count = students.map {|key, value| value.count}.reduce(0, :+)
+def print_footer
+  head_count = @students.map {|key, value| value.count}.reduce(0, :+)
   if head_count == 0
     puts "Would you like to join one?"
   elsif head_count == 1
     (puts "Overall, we have #{head_count} great student")
   else
     (puts "Overall, we have #{head_count} great students")
+  end
+end
+
+def print_menu
+  # print the menu and ask the user what to do
+  puts "1. Input the students"
+  puts "2. Show the students"
+  puts "9. Exit"
+end
+
+def show_students
+  # show the students
+  print_header
+  print_students_list
+  print_footer
+end
+
+def process(selection)
+  # do what the user has asked
+  case selection
+    when "1"
+      # input the students
+      input_students
+    when "2"
+      show_students
+    when "9"
+      # this will cause the program to terminate
+      exit
+    else
+      puts "I don't know what you meant, try again"
   end
 end
 
