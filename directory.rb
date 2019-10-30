@@ -1,21 +1,50 @@
+# create a hash with empty arrays for each cohort
+@cohorts = {
+January: [],
+February: [],
+March: [],
+April: [],
+May: [],
+June: [],
+July: [],
+August: [],
+September: [],
+October: [],
+November: [],
+December: []
+}
+
+def interactive_menu
+  students = @cohorts
+  loop do
+    # 1. print the menu and ask the user what to do
+    puts "1. Input the students"
+    puts "2. Show the students"
+    puts "9. Exit" # 9 because we'll be adding more items
+    # 2. read the input and save it into a variable
+    selection = gets.chomp
+    # 3. do what the user has asked
+    case selection
+      when "1"
+        # input the students
+        students = input_students
+      when "2"
+        # show the students
+        print_header
+        print(students)
+        print_footer(students)
+      when "9"
+        # this will cause the program to terminate
+        break
+      else
+        puts "I don't know what you meant, try again"
+    end
+  end
+end
+
 def input_students
   puts "Please enter the names of the students"
   puts "To finish, just hit return twice"
-  # create a hash with empty arrays for each cohort
-  @cohorts = {
-  January: [],
-  February: [],
-  March: [],
-  April: [],
-  May: [],
-  June: [],
-  July: [],
-  August: [],
-  September: [],
-  October: [],
-  November: [],
-  December: []
-  }
   # get the first name
   name = gets.delete("\n")
   # while name is not empty, repeat this code
@@ -30,12 +59,12 @@ def input_students
 end
 
 def input_cohort
-  puts "Please enter the students cohort"
-  # takes user input and makes first letter a capital for compairing to cohorts values
-  cohort = gets.delete("\n").capitalize
-  # sets cohort to november if the user doesnt choose a cohort
-  cohort = "November" if cohort.empty?
-  cohort
+    puts "Please enter the students cohort"
+    # takes user input and makes first letter a capital for compairing to cohorts values
+    cohort = gets.delete("\n").capitalize
+    # sets cohort to november if the user doesnt choose a cohort
+    cohort = "November" if cohort.empty?
+    cohort
 end
 
 def input_age
@@ -61,21 +90,11 @@ def add_to_cohort(name, age, cohort)
 end
 
 def print_header
-  puts "The students of Villains Academy"
+    puts "The students of Villains Academy"
   puts "--------------------------------"
 end
 
 def print(students)
-  # students.each_with_index do |student, index|
-  #   if student[:name][0].downcase == "k" && student[:name].length < 12
-  #     puts "#{index + 1}. #{student[:name]} (#{student[:cohort]} cohort)"
-  #   end
-  # end
-  # i = 0
-  # while i < students.length
-  #   puts "#{i + 1}. #{students[i][:name]} age: #{students[i][:age]} (#{students[i][:cohort]} cohort)".center(40, "-")
-  #   i += 1
-  # end
   if students.map {|key, value| value.count}.reduce(0, :+) == 0
     puts "There are currently no students in any cohort"
   else
@@ -103,7 +122,4 @@ def print_footer(students)
   end
 end
 
-students = input_students
-print_header
-print(students)
-print_footer(students)
+interactive_menu
