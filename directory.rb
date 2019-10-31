@@ -10,7 +10,7 @@ July: [],
 August: [],
 September: [],
 October: [],
-November: [],
+November: [{name: "Dr. Hannibal Lecter", age: 34}],
 December: []
 }
 
@@ -103,6 +103,7 @@ def print_menu
   # print the menu and ask the user what to do
   puts "1. Input the students"
   puts "2. Show the students"
+  puts "3. Save list of students"
   puts "9. Exit"
 end
 
@@ -121,12 +122,26 @@ def process(selection)
       input_students
     when "2"
       show_students
+    when "3"
+      save_students
     when "9"
       # this will cause the program to terminate
       exit
     else
       puts "I don't know what you meant, try again"
   end
+end
+
+def save_students
+  # open the file for writing
+  file = File.open("students.csv", "w")
+  # iterate over the array of students
+  @students[:November].each do |student|
+    student_data = [student[:name], student[:age]]
+    csv_line = student_data.join(",")
+    file.puts csv_line
+  end
+  file.close
 end
 
 interactive_menu
