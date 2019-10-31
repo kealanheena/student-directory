@@ -17,7 +17,7 @@ December: []
 def interactive_menu
   loop do
     print_menu
-    process(gets.chomp)
+    process(STDIN.gets.chomp)
   end
 end
 
@@ -25,7 +25,7 @@ def input_students
   puts "Please enter the names of the students"
   puts "To finish, just hit return twice"
   # get the first name
-  name = gets.delete("\n")
+  name = STDIN.gets.chomp
   # while name is not empty, repeat this code
   while !name.empty? do
     cohort = input_cohort
@@ -39,7 +39,7 @@ end
 def input_cohort
     puts "Please enter the students cohort"
     # takes user input and makes first letter a capital for compairing to cohorts values
-    cohort = gets.delete("\n").capitalize
+    cohort = STDIN.gets.chomp.capitalize
     # sets cohort to november if the user doesnt choose a cohort
     cohort = "November" if cohort.empty?
     cohort
@@ -49,7 +49,7 @@ def input_age
   puts "Please enter the students age"
   # adding more info works the same
   # gets user input for students age
-  age = gets.delete("\n")
+  age = STDIN.gets.chomp
   # sets age to N/A if user doesn't set an age
   age = "N/A" if age.empty?
   age
@@ -76,7 +76,7 @@ def print_students_list
     puts "There are currently no students in any cohort"
   else
     puts "Which cohort would you like to see?"
-    selected_cohort = gets.delete("\n").capitalize
+    selected_cohort = STDIN.gets.chomp.capitalize
     @students.each do |key, value|
       if selected_cohort.include?(key.to_s[0..2])
         puts "#{key} cohorts students:"
@@ -147,14 +147,31 @@ def save_students
   file.close
 end
 
-def load_students
-  file = File.open(".gitignore/students.csv", "r")
+def load_students(filename = ".gitignore/students.csv")
+  file = File.open(filename, "r")
   file.readlines.each do |line|
     name, age = line.chomp.split(",")
     # Have to get working for each cohort on the hash
     @students[:November] << {name: name, age: age} # Have to get working for each cohort on the hash
   end
   file.close
+end
+
+def try_load_students
+  # first argument from the command line
+  filename = ARGV.first
+  # get out of the method if it isn't given
+  return if filename.nil?
+  # if it exists
+  if File.exists?(filename)
+    load_students(filename)
+    puts "Loaded #{@students.count} from #{filename}"
+  # if it doesn't exist
+  else
+    puts "Sorry, #{filename} doesn't exist."
+    # quit the program
+    exit
+  end
 end
 
 interactive_menu
