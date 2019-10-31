@@ -10,7 +10,7 @@ July: [],
 August: [],
 September: [],
 October: [],
-November: [{name: "Dr. Hannibal Lecter", age: 34}],
+November: [],
 December: []
 }
 
@@ -103,7 +103,8 @@ def print_menu
   # print the menu and ask the user what to do
   puts "1. Input the students"
   puts "2. Show the students"
-  puts "3. Save list of students"
+  puts "3. Save the list of students"
+  puts "4. Load the list of students"
   puts "9. Exit"
 end
 
@@ -124,6 +125,8 @@ def process(selection)
       show_students
     when "3"
       save_students
+    when "4"
+      load_students
     when "9"
       # this will cause the program to terminate
       exit
@@ -134,12 +137,22 @@ end
 
 def save_students
   # open the file for writing
-  file = File.open("students.csv", "w")
+  file = File.open(".gitignore/students.csv", "w")
   # iterate over the array of students
   @students[:November].each do |student|
     student_data = [student[:name], student[:age]]
     csv_line = student_data.join(",")
     file.puts csv_line
+  end
+  file.close
+end
+
+def load_students
+  file = File.open(".gitignore/students.csv", "r")
+  file.readlines.each do |line|
+    name, age = line.chomp.split(",")
+    # Have to get working for each cohort on the hash
+    @students[:November] << {name: name, age: age} # Have to get working for each cohort on the hash
   end
   file.close
 end
